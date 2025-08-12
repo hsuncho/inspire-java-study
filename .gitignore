@@ -1,1 +1,4 @@
 /lib/lombok.jar
+
+# Java compiled files
+*.class
