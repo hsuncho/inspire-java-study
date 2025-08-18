@@ -12,4 +12,8 @@ public interface PostService {
     // public int insertService(PostResponseDTO dto);
     public int insertService(PostRequestDTO request);
     // public int getListSize();
+    // public List<PostResponseDTO> searchService(String writer);
+    public Optional<List<PostResponseDTO>> searchService(String writer);
+    public int deleteService(int id);
+    public int updateService(PostRequestDTO request);
 }

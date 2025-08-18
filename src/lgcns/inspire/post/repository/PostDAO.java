@@ -3,6 +3,7 @@ package lgcns.inspire.post.repository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import lgcns.inspire.post.domain.dto.PostRequestDTO;
 import lgcns.inspire.post.domain.dto.PostResponseDTO;
@@ -21,16 +22,25 @@ public class PostDAO {
                             .id(1)
                             .title("mvc")
                             .content("springboot")
+                            .writer("hsuncho")
                             .build(),
             PostResponseDTO.builder()
                             .id(2)
                             .title("stream api")
                             .content("기초문법")
+                            .writer("hsuncho")
                             .build(),
             PostResponseDTO.builder()
                             .id(3)
                             .title("lambda")
                             .content("함수형 인터페이스")
+                            .writer("lgcns")
+                            .build(),
+            PostResponseDTO.builder()
+                            .id(4)
+                            .title("springboot")
+                            .content("pattern 조합")
+                            .writer("inspire")
                             .build()
         ));
     }
@@ -68,12 +78,27 @@ public class PostDAO {
     // U (수정)
     public int updateRow(PostRequestDTO request) {
         System.out.println(">>> dao updateRow");
-        return 0;
+        return posts.stream() 
+                    .filter(post -> post.getId() == request.getId())
+                    .findFirst()
+                    .map(post -> {
+                        posts.set(posts.indexOf(post), 
+                            PostResponseDTO.builder()
+                                            .id(post.getId())
+                                            .writer(post.getWriter())
+                                            .title(request.getTitle())
+                                            .content(request.getContent())
+                                            .build()
+                        );
+                    return 1;
+                    })
+                    .orElse(0);
+        
     }
 
     // D (삭제)
-    public int deleteRow(String id) {
+    public int deleteRow(int id) {
         System.out.println(">>> dao deleteRow id");
-        return 0;
+        return posts.removeIf(post -> post.getId() == id) ? 1 : 0;
     }
 }
