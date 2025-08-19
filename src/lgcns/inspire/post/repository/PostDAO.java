@@ -3,7 +3,9 @@ package lgcns.inspire.post.repository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import lgcns.inspire.post.domain.dto.PostRequestDTO;
 import lgcns.inspire.post.domain.dto.PostResponseDTO;
@@ -76,29 +78,76 @@ public class PostDAO {
     // }
 
     // U (수정)
+    // Stream peek() : 원본리스트 안의 객체 속성을 변경할 수 있다.
     public int updateRow(PostRequestDTO request) {
         System.out.println(">>> dao updateRow");
-        return posts.stream() 
-                    .filter(post -> post.getId() == request.getId())
-                    .findFirst()
-                    .map(post -> {
-                        posts.set(posts.indexOf(post), 
-                            PostResponseDTO.builder()
-                                            .id(post.getId())
-                                            .writer(post.getWriter())
-                                            .title(request.getTitle())
-                                            .content(request.getContent())
-                                            .build()
-                        );
-                    return 1;
-                    })
-                    .orElse(0);
+        // return posts.stream() 
+        //             .filter(post -> post.getId() == request.getId())
+        //             .findFirst()
+        //             .map(post -> {
+        //                 posts.set(posts.indexOf(post), 
+        //                     PostResponseDTO.builder()
+        //                                     .id(post.getId())
+        //                                     .writer(post.getWriter())
+        //                                     .title(request.getTitle())
+        //                                     .content(request.getContent())
+        //                                     .build()
+        //                 );
+        //             return 1;
+        //             })
+        //             .orElse(0);
         
+        // for (int i = 0; i < posts.size(); i++) {
+        //     PostResponseDTO post = posts.get(i);
+        //     if (post.getId() == request.getId()) {
+        //         posts.set(i, PostResponseDTO.builder()
+        //                                     .id(post.getId())
+        //                                     .writer(post.getWriter())
+        //                                     .title(request.getTitle())
+        //                                     .content(request.getContent())
+        //                                     .build());
+        //         return 1;
+        //     }
+        // }
+        // return 0;
+
+        // posts.stream()
+        //         .filter(post -> post.getId() == request.getId())
+        //         .findFirst()
+        //         .ifPresent(post -> {
+        //             post.setTitle(request.getTitle());
+        //             post.setContent(request.getContent());
+        //         });
+        // return 1;
+
+        // posts.stream()
+        //         .filter(post -> post.getId() == request.getId())
+        //         .peek(post -> {
+        //             post.setTitle(request.getTitle());
+        //             post.setContent(request.getContent());
+        //         })
+        //         .forEach(post -> {});
+        // return 1;
+
+        return posts.stream()
+                .filter(post -> post.getId() == request.getId())
+                .peek(post -> {
+                    post.setTitle(request.getTitle());
+                    post.setContent(request.getContent());
+                })
+                .findFirst()
+                .map(post -> 1)
+                .orElse(0);
     }
 
     // D (삭제)
-    public int deleteRow(int id) {
+    // public int deleteRow(int id) {
+    //     System.out.println(">>> dao deleteRow id");
+    //     return posts.removeIf(post -> post.getId() == id) ? 1 : 0;
+    // }
+
+    public int deleteRow(Map<String, Integer> map) {
         System.out.println(">>> dao deleteRow id");
-        return posts.removeIf(post -> post.getId() == id) ? 1 : 0;
+        return posts.removeIf(post -> post.getId() == map.get("key")) ? 1 : 0;
     }
 }

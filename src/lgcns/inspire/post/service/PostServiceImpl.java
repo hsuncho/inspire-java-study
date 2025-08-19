@@ -1,6 +1,7 @@
 package lgcns.inspire.post.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -13,11 +14,13 @@ public class PostServiceImpl implements PostService{
     public PostServiceImpl() {
         dao = new PostDAO();
     }
+
     @Override
     public List<PostResponseDTO> selectService() {
         System.out.println(">>> post service selectService");
         return dao.selectRow();
     }
+
     /*
     가져온 데이터로부터 식별값(id)에 만족하는 데이터를 반환할 때 Optional<PostResponseDTO>
     stream() 사용
@@ -30,6 +33,7 @@ public class PostServiceImpl implements PostService{
                 .filter(data -> data.getId() == id)
                 .findAny();
     }
+
     // @Override
     // public int insertService(PostResponseDTO dto) {
     //     return dao.insertRow(dto);
@@ -43,6 +47,7 @@ public class PostServiceImpl implements PostService{
         System.out.println(">>> post service insertService : " + request);
         return dao.insertRow(request);    
     }
+
     /*
     Quiz)
     - 전체 글 목록을 가져고와서
@@ -61,12 +66,20 @@ public class PostServiceImpl implements PostService{
                                             .collect(Collectors.toList());
         return result.isEmpty() ? Optional.empty() : Optional.of(result);
     }
+
+    // @Override
+    // public int deleteService(int id) {
+    //     return dao.deleteRow(id);
+    // }
     @Override
-    public int deleteService(int id) {
-        return dao.deleteRow(id);
+    public int deleteService(Map<String, Integer> map) {
+        System.out.println(">>> post service deleteService : params id " + map.get("key"));
+        return dao.deleteRow(map);
     }
+
     @Override
     public int updateService(PostRequestDTO reqruest) {
+        System.out.println(">>> post service updateService : params request " + reqruest);
         return dao.updateRow(reqruest);
     }
 }

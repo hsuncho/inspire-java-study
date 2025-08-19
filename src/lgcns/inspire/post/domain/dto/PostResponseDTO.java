@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Builder
 @Getter
+@Setter
 @ToString
 public class PostResponseDTO {
     private int id; // 해당 게시글을 식별할 수 있는 기본 키(primary key)
