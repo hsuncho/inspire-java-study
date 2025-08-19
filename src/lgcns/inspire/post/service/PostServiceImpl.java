@@ -1,5 +1,7 @@
 package lgcns.inspire.post.service;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -81,5 +83,27 @@ public class PostServiceImpl implements PostService{
     public int updateService(PostRequestDTO reqruest) {
         System.out.println(">>> post service updateService : params request " + reqruest);
         return dao.updateRow(reqruest);
+    }
+
+    @Override
+    public List<PostResponseDTO> loadToFile() {
+        System.out.println(">>> post service loadToFile");
+        return null;
+    }
+
+    @Override
+    public boolean saveToFile() {
+        System.out.println(">>> post service saveToFile");
+        boolean flag = false;
+        List<PostResponseDTO> list = dao.selectRow();
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:\\inspire\\be\\inspire-java\\test.txt"))) {
+            oos.writeObject(list);
+            System.out.println(">>> 직렬화된 객체 파일에 저장 완료");
+            flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return flag;
+        }
+        return flag;
     }
 }

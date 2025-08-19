@@ -7,6 +7,7 @@ import lgcns.inspire.post.controller.PostDeleteController;
 import lgcns.inspire.post.controller.PostFindController;
 import lgcns.inspire.post.controller.PostInsertController;
 import lgcns.inspire.post.controller.PostListController;
+import lgcns.inspire.post.controller.PostSaveController;
 import lgcns.inspire.post.controller.PostSearchController;
 import lgcns.inspire.post.controller.PostUpdateController;
 import lgcns.inspire.post.service.PostService;
@@ -32,6 +33,7 @@ public class BeanFactory {
         map.put("delete", new PostDeleteController(service));
         map.put("update", new PostUpdateController(service));
         map.put("searchByWriter", new PostSearchController(service));
+        map.put("save", new PostSaveController(service));
     }
     public static BeanFactory getInstance() {
         if(instance == null) {

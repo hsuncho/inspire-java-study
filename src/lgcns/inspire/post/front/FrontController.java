@@ -7,6 +7,7 @@ import lgcns.inspire.post.controller.PostDeleteController;
 import lgcns.inspire.post.controller.PostFindController;
 import lgcns.inspire.post.controller.PostInsertController;
 import lgcns.inspire.post.controller.PostListController;
+import lgcns.inspire.post.controller.PostSaveController;
 import lgcns.inspire.post.controller.PostSearchController;
 import lgcns.inspire.post.controller.PostUpdateController;
 import lgcns.inspire.post.domain.dto.PostResponseDTO;
@@ -62,5 +63,12 @@ public class FrontController {
         System.out.println(">>> front controller search params " + writer);
         PostSearchController obj = (PostSearchController) factory.getController(requestURL);
         return obj.searchByWriter(writer);
+    }
+
+    public boolean save(String requestURL) {
+        System.out.println(">>> front controller save : ");
+        // PostSaveController - save() - saveToFile() : IO 스트림을 이용한 데이터 저장
+        PostSaveController obj = (PostSaveController) factory.getController(requestURL);
+        return obj.save();
     }
 }

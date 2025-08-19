@@ -23,4 +23,8 @@ public interface PostService {
     public int deleteService(Map<String, Integer> map);
     
     public int updateService(PostRequestDTO request);
+
+    // file save or load
+    public List<PostResponseDTO> loadToFile();
+    public boolean saveToFile();
 }

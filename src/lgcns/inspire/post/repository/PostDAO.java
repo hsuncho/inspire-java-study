@@ -1,5 +1,8 @@
 package lgcns.inspire.post.repository;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,34 +20,22 @@ DAO(Data Access Object)
 - Structure Query Language (SQL) : DDL, DML, DCL, Select Query
 */
 public class PostDAO {
+
     private List<PostResponseDTO> posts;
+
     public PostDAO() {
-        posts = new ArrayList<>(Arrays.asList(
-            PostResponseDTO.builder()
-                            .id(1)
-                            .title("mvc")
-                            .content("springboot")
-                            .writer("hsuncho")
-                            .build(),
-            PostResponseDTO.builder()
-                            .id(2)
-                            .title("stream api")
-                            .content("기초문법")
-                            .writer("hsuncho")
-                            .build(),
-            PostResponseDTO.builder()
-                            .id(3)
-                            .title("lambda")
-                            .content("함수형 인터페이스")
-                            .writer("lgcns")
-                            .build(),
-            PostResponseDTO.builder()
-                            .id(4)
-                            .title("springboot")
-                            .content("pattern 조합")
-                            .writer("inspire")
-                            .build()
-        ));
+        // 파일 입출력으로 데이터 저장 및 로드를 위해서
+        posts = new ArrayList<PostResponseDTO>();
+
+        // 파일 입력
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\inspire\\be\\inspire-java\\test.txt"))) {
+            posts.clear();
+            posts = (List<PostResponseDTO>) ois.readObject();
+            posts.stream()
+                .forEach(System.out::println);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getListSize() {
@@ -66,7 +57,11 @@ public class PostDAO {
     public List<PostResponseDTO> selectRow() {
         System.out.println(">>> dao selectRow");
         // 데이터베이스 연동 후 값을 가져온다고 가정하고 더미데이터를 생성
-        // 초기 데이터 생성
+        if(posts.size() == 0) {
+            // 파일로부터 데이터 로딩해서 멤버변수에 할당하고 반환
+        } else {
+            // 기존 posts 반환
+        }
         return posts;
     }
 
